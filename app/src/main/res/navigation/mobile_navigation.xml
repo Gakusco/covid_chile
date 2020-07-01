@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.jcortiz.covidchile.ui.home.HomeFragment"
+        android:name="com.jcortiz.covidchile.ui.Nacional.NacionalFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_nacional" />
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.jcortiz.covidchile.ui.dashboard.DashboardFragment"
+        android:name="com.jcortiz.covidchile.ui.Regionales.RegionalFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
-        android:name="com.jcortiz.covidchile.ui.notifications.NotificationsFragment"
+        android:name="com.jcortiz.covidchile.ui.Regional.RegionalFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_regional" />
 </navigation>

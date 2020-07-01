@@ -1,14 +1,14 @@
-package com.jcortiz.covidchile.ui.home;
+package com.jcortiz.covidchile.ui.Nacional;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class HomeViewModel extends ViewModel {
+public class NacionalViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public HomeViewModel() {
+    public NacionalViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is home fragment");
     }

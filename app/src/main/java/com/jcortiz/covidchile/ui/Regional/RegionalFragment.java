@@ -1,4 +1,4 @@
-package com.jcortiz.covidchile.ui.notifications;
+package com.jcortiz.covidchile.ui.Regional;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,15 +12,15 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.jcortiz.covidchile.R;
 
-public class NotificationsFragment extends Fragment {
+public class RegionalFragment extends Fragment {
 
-    private NotificationsViewModel notificationsViewModel;
+    private RegionalViewModel notificationsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
         notificationsViewModel =
-                ViewModelProviders.of(this).get(NotificationsViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_notifications, container, false);
+                ViewModelProviders.of(this).get(RegionalViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_regional, container, false);
         final TextView textView = root.findViewById(R.id.text_notifications);
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
