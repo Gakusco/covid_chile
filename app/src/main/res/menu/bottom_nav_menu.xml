@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_nacional"
         android:icon="@drawable/ic_bandera"
         android:title="@string/title_home"/>
 
     <item
-        android:id="@+id/navigation_dashboard"
+        android:id="@+id/navigation_regionales"
         android:icon="@drawable/ic_chile"
         android:title="@string/title_dashboard"/>
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_regional"
         android:icon="@drawable/ic_metropolitana"
         android:title="@string/title_notifications"/>
 
