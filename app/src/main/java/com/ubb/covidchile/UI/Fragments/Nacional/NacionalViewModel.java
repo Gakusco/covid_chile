@@ -1,16 +1,16 @@
-package com.jcortiz.covidchile.ui.Regionales;
+package com.ubb.covidchile.UI.Fragments.Nacional;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class RegionalViewModel extends ViewModel {
+public class NacionalViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;
 
-    public RegionalViewModel() {
+    public NacionalViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is home fragment");
     }
 
     public LiveData<String> getText() {

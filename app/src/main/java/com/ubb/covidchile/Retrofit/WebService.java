@@ -1,6 +1,7 @@
-package com.jcortiz.covidchile;
+package com.ubb.covidchile.Retrofit;
 
-import com.jcortiz.covidchile.Request.RequestWS;
+
+import com.ubb.covidchile.Retrofit.Request.RequestWS;
 
 import retrofit2.Call;
 import retrofit2.http.POST;

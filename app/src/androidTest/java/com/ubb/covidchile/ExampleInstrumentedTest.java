@@ -1,4 +1,4 @@
-package com.jcortiz.covidchile;
+package com.ubb.covidchile;
 
 import android.content.Context;
 

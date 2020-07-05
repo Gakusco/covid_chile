@@ -1,4 +1,4 @@
-package com.jcortiz.covidchile.Request;
+package com.ubb.covidchile.Retrofit.Request;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

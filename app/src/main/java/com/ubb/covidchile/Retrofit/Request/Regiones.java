@@ -1,4 +1,4 @@
-package com.jcortiz.covidchile.Request;
+package com.ubb.covidchile.Retrofit.Request;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -16,6 +16,10 @@ public class Regiones {
     @SerializedName("nombre")
     @Expose
     private List<String> nombre;
+
+    @SerializedName("coordenadas")
+    @Expose
+    private List<String> coordenadas;
 
     public Regiones(List<Integer> id, List<String> nombre) {
         this.id = id;
@@ -36,6 +40,14 @@ public class Regiones {
 
     public void setNombre(List<String> nombre) {
         this.nombre = nombre;
+    }
+
+    public List<String> getCoordenadas() {
+        return coordenadas;
+    }
+
+    public void setCoordenadas(List<String> coordenadas) {
+        this.coordenadas = coordenadas;
     }
 
     @Override

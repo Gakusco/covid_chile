@@ -1,4 +1,4 @@
-package com.jcortiz.covidchile.ui.Regional;
+package com.ubb.covidchile.UI.Fragments.Regional;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import com.jcortiz.covidchile.R;
+import com.ubb.covidchile.R;
 
 public class RegionalFragment extends Fragment {
 

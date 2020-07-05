@@ -1,15 +1,14 @@
-package com.jcortiz.covidchile;
+package com.ubb.covidchile.UI.Activities;
 
 import android.os.Bundle;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.ubb.covidchile.R;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.jcortiz.covidchile.ui.Regional;
+package com.ubb.covidchile.UI.Fragments.Regional;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
