@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +16,8 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ubb.covidchile.Common.Constantes;
@@ -32,25 +29,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegionesFragment extends Fragment {
-    GoogleMap globalMap;
-
-
-    private OnMapReadyCallback callback = new OnMapReadyCallback() {
-
-        @Override
-        public void onMapReady(GoogleMap googleMap) {
-            googleMap.clear();
-            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-            generarRegiones(googleMap);
-            googleMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
-                @Override
-                public void onPolygonClick(Polygon polygon) {
-                    Toast.makeText(getActivity().getApplicationContext(), polygon.getTag() + "", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-    };
+public class RegionesFragment extends Fragment{
 
     @Nullable
     @Override
@@ -71,7 +50,33 @@ public class RegionesFragment extends Fragment {
         }
     }
 
-    private void lol(GoogleMap googleMap, int numRegion) {
+    private OnMapReadyCallback callback = new OnMapReadyCallback() {
+        @Override
+        public void onMapReady(GoogleMap googleMap) {
+            setConfigMap(googleMap);
+            googleMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
+                @Override
+                public void onPolygonClick(Polygon polygon) {
+                    Toast.makeText(getActivity().getApplicationContext(), polygon.getTag() + "", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    };
+
+    private void setConfigMap(GoogleMap googleMap) {
+        googleMap.clear();
+        googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        generarRegiones(googleMap);
+    }
+
+    private void generarRegiones(GoogleMap googleMap) {
+        for (int i = 0; i < Constantes.NUM_REGIONES; i++) {
+            setPolygonToMap(googleMap, i + 1);
+        }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-26.06665213857739, -70.64208984375), 2));
+    }
+
+    private void setPolygonToMap(GoogleMap googleMap, int numRegion) {
         Coordenadas coordenadas = readJsonFromAssets(numRegion);
         List<LatLng> listLatLng = new ArrayList<>();
 
@@ -89,31 +94,11 @@ public class RegionesFragment extends Fragment {
 
     }
 
-    private Coordenadas readJsonFromAssets(int numRegion){
+    private Coordenadas readJsonFromAssets(int numRegion) {
         String jsonFileString = Utilities.getJsonFromAssets(getActivity().getApplicationContext(), "regiones/" + numRegion + ".json");
         Gson gson = new Gson();
         Type coordenadas = new TypeToken<Coordenadas>() {
         }.getType();
         return gson.fromJson(jsonFileString, coordenadas);
-    }
-
-    private void generarRegiones(GoogleMap googleMap) {
-        lol(googleMap,1);
-        lol(googleMap,2);
-        lol(googleMap,3);
-        lol(googleMap,4);
-        lol(googleMap,5);
-        lol(googleMap,6);
-        lol(googleMap,7);
-        lol(googleMap,8);
-        lol(googleMap,9);
-        lol(googleMap,10);
-        lol(googleMap,11);
-        lol(googleMap,12);
-        lol(googleMap,13);
-        lol(googleMap,14);
-        lol(googleMap,15);
-        lol(googleMap,16);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-26.06665213857739, -70.64208984375), 2));
     }
 }
