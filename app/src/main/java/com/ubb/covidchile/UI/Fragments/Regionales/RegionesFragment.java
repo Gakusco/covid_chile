@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -18,6 +20,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ubb.covidchile.Common.Constantes;
@@ -41,6 +44,7 @@ public class RegionesFragment extends Fragment {
 
     private WebServiceClient webServiceClient;
     private WebService webService;
+    private TextView tvNameRegion;
 
     @Nullable
     @Override
@@ -66,25 +70,39 @@ public class RegionesFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             setConfigMap(googleMap);
 
-            googleMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
-                @Override
-                public void onPolygonClick(Polygon polygon) {
-                    Call<RequestWS> dataId = webService.dataId(Integer.parseInt(polygon.getTag().toString()));
-                    dataId.enqueue(new Callback<RequestWS>() {
-                        @Override
-                        public void onResponse(Call<RequestWS> call, Response<RequestWS> response) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Casos totales: " + response.body().getReporte().getAcumuladoTotal() + " region: " + response.body().getInfo(), Toast.LENGTH_SHORT).show();
-                        }
+            googleMap.setOnPolygonClickListener(polygon -> {
+                Call<RequestWS> dataId = webService.dataId(Integer.parseInt(polygon.getTag().toString()));
+                dataId.enqueue(new Callback<RequestWS>() {
+                    @Override
+                    public void onResponse(Call<RequestWS> call, Response<RequestWS> response) {
+                        Toast.makeText(getActivity().getApplicationContext(), "Casos totales: " + response.body().getReporte().getAcumuladoTotal() + " region: " + response.body().getInfo(), Toast.LENGTH_SHORT).show();
+                        openBottomSheetDialog(response.body().getInfo());
+                    }
 
-                        @Override
-                        public void onFailure(Call<RequestWS> call, Throwable t) {
-                            Toast.makeText(getActivity().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                    @Override
+                    public void onFailure(Call<RequestWS> call, Throwable t) {
+                        Toast.makeText(getActivity().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                    }
+                });
             });
         }
     };
+
+    private void openBottomSheetDialog(String nameRegion) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
+        View bottom = LayoutInflater.from(getActivity().getApplicationContext()).inflate(R.layout.layout_bottom_sheet, getView().findViewById(R.id.bottomSheetContainer));
+
+        tvNameRegion = bottom.findViewById(R.id.tv_regionName);
+        tvNameRegion.setText(nameRegion);
+
+        bottom.findViewById(R.id.buttonShare).setOnClickListener(v -> {
+            Toast.makeText(getActivity().getApplicationContext(), "Cerrando", Toast.LENGTH_SHORT).show();
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.setContentView(bottom);
+        bottomSheetDialog.show();
+    }
 
     private void setConfigMap(GoogleMap googleMap) {
         googleMap.clear();
@@ -114,7 +132,6 @@ public class RegionesFragment extends Fragment {
         Polygon polygon2 = googleMap.addPolygon(polOpt);
         polygon2.setClickable(true);
         polygon2.setTag(numRegion);
-
     }
 
     private Coordenadas readJsonFromAssets(int numRegion) {
