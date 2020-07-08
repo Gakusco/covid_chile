@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Polygon;
 import com.google.android.gms.maps.model.PolygonOptions;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ubb.covidchile.Common.Constantes;
@@ -38,13 +39,20 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Path;
 
 public class RegionesFragment extends Fragment {
 
     private WebServiceClient webServiceClient;
     private WebService webService;
     private TextView tvNameRegion;
+    private TextView tvDate;
+    private TextView tvCasosTotales;
+    private TextView tvNuevosCasos;
+    private TextView tvconSintomas;
+    private TextView tvsinSintomas;
+    private TextView tvSinNotificar;
+    private TextView tvFallecidos;
+    private TextView tvActivos;
 
     @Nullable
     @Override
@@ -69,14 +77,13 @@ public class RegionesFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             setConfigMap(googleMap);
-
             googleMap.setOnPolygonClickListener(polygon -> {
+                Toast.makeText(getActivity().getApplicationContext(), "Cargando datos ...", Toast.LENGTH_SHORT).show();
                 Call<RequestWS> dataId = webService.dataId(Integer.parseInt(polygon.getTag().toString()));
                 dataId.enqueue(new Callback<RequestWS>() {
                     @Override
                     public void onResponse(Call<RequestWS> call, Response<RequestWS> response) {
-                        Toast.makeText(getActivity().getApplicationContext(), "Casos totales: " + response.body().getReporte().getAcumuladoTotal() + " region: " + response.body().getInfo(), Toast.LENGTH_SHORT).show();
-                        openBottomSheetDialog(response.body().getInfo());
+                        openBottomSheetDialog(response.body());
                     }
 
                     @Override
@@ -88,20 +95,43 @@ public class RegionesFragment extends Fragment {
         }
     };
 
-    private void openBottomSheetDialog(String nameRegion) {
+    private void openBottomSheetDialog(RequestWS res) {
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getActivity(), R.style.BottomSheetDialogTheme);
         View bottom = LayoutInflater.from(getActivity().getApplicationContext()).inflate(R.layout.layout_bottom_sheet, getView().findViewById(R.id.bottomSheetContainer));
 
-        tvNameRegion = bottom.findViewById(R.id.tv_regionName);
-        tvNameRegion.setText(nameRegion);
+        initTextViews(bottom);
+        setTextAndDataTextViews(res);
 
         bottom.findViewById(R.id.buttonShare).setOnClickListener(v -> {
-            Toast.makeText(getActivity().getApplicationContext(), "Cerrando", Toast.LENGTH_SHORT).show();
             bottomSheetDialog.dismiss();
         });
 
         bottomSheetDialog.setContentView(bottom);
         bottomSheetDialog.show();
+    }
+
+    private void initTextViews(View bottom) {
+        tvNameRegion = bottom.findViewById(R.id.tv_regionName);
+        tvDate = bottom.findViewById(R.id.tv_calendario);
+        tvCasosTotales = bottom.findViewById(R.id.tv_casosTotales);
+        tvNuevosCasos = bottom.findViewById(R.id.tv_nuevosCasos);
+        tvconSintomas = bottom.findViewById(R.id.tv_conSintomas);
+        tvsinSintomas = bottom.findViewById(R.id.tv_sinSintomas);
+        tvSinNotificar = bottom.findViewById(R.id.tv_sinNotificar);
+        tvFallecidos = bottom.findViewById(R.id.tv_fallecidos);
+        tvActivos = bottom.findViewById(R.id.tv_activos);
+    }
+
+    private void setTextAndDataTextViews(RequestWS res){
+        tvNameRegion.setText(res.getInfo());
+        tvDate.setText(Constantes.FECHA.concat(res.getFecha()));
+        tvCasosTotales.setText(Constantes.CASOS_TOTALES.concat(String.valueOf(res.getReporte().getAcumuladoTotal())));
+        tvNuevosCasos.setText(Constantes.NUEVOS_CASOS.concat(String.valueOf(res.getReporte().getCasosNuevosTotal())));
+        tvconSintomas.setText(Constantes.CON_SINTOMAS.concat(String.valueOf(res.getReporte().getCasosNuevosCSintomas())));
+        tvsinSintomas.setText(Constantes.SIN_SINTOMAS.concat(String.valueOf(res.getReporte().getCasosNuevosSSintomas())));
+        tvSinNotificar.setText(Constantes.SIN_NOTIFICAR.concat(String.valueOf(res.getReporte().getCasosNuevosSNotificar())));
+        tvFallecidos.setText(Constantes.FALLECIDOS.concat(String.valueOf(res.getReporte().getFallecidos())));
+        tvActivos.setText(Constantes.ACTIVOS.concat(String.valueOf(res.getReporte().getCasosActivosConfirmados())));
     }
 
     private void setConfigMap(GoogleMap googleMap) {
@@ -115,6 +145,7 @@ public class RegionesFragment extends Fragment {
             setPolygonToMap(googleMap, i + 1);
         }
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-26.06665213857739, -70.64208984375), 2));
+        googleMap.setMinZoomPreference(5f);
     }
 
     private void setPolygonToMap(GoogleMap googleMap, int numRegion) {

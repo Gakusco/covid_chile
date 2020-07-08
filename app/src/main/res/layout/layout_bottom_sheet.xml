@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fancy="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomSheetContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:padding="15dp"
+        android:padding="2dp"
         android:textColor="@color/black"
         android:textSize="18dp"
         android:textStyle="bold" />
@@ -19,13 +22,219 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="2dp"
         android:background="@color/colorDivider" />
 
-    <Button
-        android:id="@+id/buttonShare"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Prueba" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_principalImage"
+            android:layout_width="180dp"
+            android:layout_height="200dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/winning_covid"
+            app:layout_constraintBottom_toTopOf="@+id/buttonShare"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_calendario"
+            app:riv_corner_radius="10dp" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_calendario"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:layout_marginStart="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/calendario"
+            app:layout_constraintStart_toEndOf="@+id/iv_principalImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_corner_radius="10dp" />
+
+        <TextView
+            android:id="@+id/tv_calendario"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="viewStart"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_calendario"
+            app:layout_constraintTop_toTopOf="@+id/iv_calendario" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_casosTotales"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_virus"
+            app:layout_constraintStart_toEndOf="@+id/iv_principalImage"
+            app:layout_constraintTop_toBottomOf="@+id/iv_calendario" />
+
+        <TextView
+            android:id="@+id/tv_casosTotales"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="viewStart"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_casosTotales"
+            app:layout_constraintTop_toTopOf="@+id/iv_casosTotales" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+        android:id="@+id/iv_nuevosCasos"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_racimo"
+        app:layout_constraintStart_toEndOf="@+id/iv_principalImage"
+        app:layout_constraintTop_toBottomOf="@+id/iv_casosTotales" />
+
+        <TextView
+            android:id="@+id/tv_nuevosCasos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="viewStart"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_nuevosCasos"
+            app:layout_constraintTop_toTopOf="@+id/iv_nuevosCasos" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_conSintomas"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_fever"
+            app:layout_constraintStart_toEndOf="@+id/iv_principalImage"
+            app:layout_constraintTop_toBottomOf="@+id/iv_nuevosCasos" />
+
+        <TextView
+            android:id="@+id/tv_conSintomas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="viewStart"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_conSintomas"
+            app:layout_constraintTop_toTopOf="@+id/iv_conSintomas" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_sinSintomas"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_conciencia"
+            app:layout_constraintStart_toEndOf="@+id/iv_principalImage"
+            app:layout_constraintTop_toBottomOf="@+id/iv_conSintomas" />
+
+        <TextView
+            android:id="@+id/tv_sinSintomas"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="viewStart"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_sinSintomas"
+            app:layout_constraintTop_toTopOf="@+id/iv_sinSintomas" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_sinNotificar"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_respiracion_dificultosa"
+            app:layout_constraintStart_toEndOf="@+id/iv_principalImage"
+            app:layout_constraintTop_toBottomOf="@+id/iv_sinSintomas" />
+
+        <TextView
+            android:id="@+id/tv_sinNotificar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="viewStart"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_sinNotificar"
+            app:layout_constraintTop_toTopOf="@+id/iv_sinNotificar" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_fallecidos"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_muerte"
+            app:layout_constraintStart_toEndOf="@+id/iv_principalImage"
+            app:layout_constraintTop_toBottomOf="@+id/iv_sinNotificar" />
+
+        <TextView
+            android:id="@+id/tv_fallecidos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="viewStart"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_fallecidos"
+            app:layout_constraintTop_toTopOf="@+id/iv_fallecidos" />
+
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/iv_activos"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_mask_2"
+            app:layout_constraintStart_toEndOf="@+id/iv_principalImage"
+            app:layout_constraintTop_toBottomOf="@+id/iv_fallecidos" />
+
+        <TextView
+            android:id="@+id/tv_activos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textAlignment="viewStart"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv_activos"
+            app:layout_constraintTop_toTopOf="@+id/iv_activos" />
+
+        <mehdi.sakout.fancybuttons.FancyButton
+            android:id="@+id/buttonShare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/iv_principalImage"
+            app:layout_constraintStart_toStartOf="@+id/iv_principalImage"
+            fancy:fb_borderColor="#FFFFFF"
+            fancy:fb_borderWidth="1dp"
+            fancy:fb_defaultColor="@color/colorPrimary"
+            fancy:fb_focusColor="@color/colorPrimaryLight"
+            fancy:fb_fontIconResource="&#xf00d;"
+            fancy:fb_iconPosition="right"
+            fancy:fb_radius="30dp"
+            fancy:fb_text="Cerrar"
+            fancy:fb_textColor="#FFFFFF" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
