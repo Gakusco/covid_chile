@@ -24,12 +24,23 @@ import com.ubb.covidchile.Common.Constantes;
 import com.ubb.covidchile.Common.Utilities;
 import com.ubb.covidchile.R;
 import com.ubb.covidchile.Retrofit.Request.Coordenadas;
+import com.ubb.covidchile.Retrofit.Request.RequestWS;
+import com.ubb.covidchile.Retrofit.WebService;
+import com.ubb.covidchile.Retrofit.WebServiceClient;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegionesFragment extends Fragment{
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Path;
+
+public class RegionesFragment extends Fragment {
+
+    private WebServiceClient webServiceClient;
+    private WebService webService;
 
     @Nullable
     @Override
@@ -44,20 +55,32 @@ public class RegionesFragment extends Fragment{
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+        retrofitInit();
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             setConfigMap(googleMap);
+
             googleMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
                 @Override
                 public void onPolygonClick(Polygon polygon) {
-                    Toast.makeText(getActivity().getApplicationContext(), polygon.getTag() + "", Toast.LENGTH_SHORT).show();
+                    Call<RequestWS> dataId = webService.dataId(Integer.parseInt(polygon.getTag().toString()));
+                    dataId.enqueue(new Callback<RequestWS>() {
+                        @Override
+                        public void onResponse(Call<RequestWS> call, Response<RequestWS> response) {
+                            Toast.makeText(getActivity().getApplicationContext(), "Casos totales: " + response.body().getReporte().getAcumuladoTotal() + " region: " + response.body().getInfo(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<RequestWS> call, Throwable t) {
+                            Toast.makeText(getActivity().getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                 }
             });
         }
@@ -100,5 +123,10 @@ public class RegionesFragment extends Fragment{
         Type coordenadas = new TypeToken<Coordenadas>() {
         }.getType();
         return gson.fromJson(jsonFileString, coordenadas);
+    }
+
+    private void retrofitInit() {
+        webServiceClient = WebServiceClient.getInstance();
+        webService = webServiceClient.getWebService();
     }
 }
