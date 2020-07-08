@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -15,26 +18,37 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polygon;
+import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.ubb.covidchile.Common.Constantes;
+import com.ubb.covidchile.Common.Utilities;
 import com.ubb.covidchile.R;
+import com.ubb.covidchile.Retrofit.Request.Coordenadas;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegionesFragment extends Fragment {
+    GoogleMap globalMap;
+
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            googleMap.clear();
+            googleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+            generarRegiones(googleMap);
+            googleMap.setOnPolygonClickListener(new GoogleMap.OnPolygonClickListener() {
+                @Override
+                public void onPolygonClick(Polygon polygon) {
+                    Toast.makeText(getActivity().getApplicationContext(), polygon.getTag() + "", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     };
 
@@ -51,8 +65,55 @@ public class RegionesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
+    }
+
+    private void lol(GoogleMap googleMap, int numRegion) {
+        Coordenadas coordenadas = readJsonFromAssets(numRegion);
+        List<LatLng> listLatLng = new ArrayList<>();
+
+        for (int i = 0; i < coordenadas.getCoordinates().size(); i++) {
+            listLatLng.add(new LatLng(coordenadas.getCoordinates().get(i).get(1), coordenadas.getCoordinates().get(i).get(0)));
+        }
+
+        PolygonOptions polOpt = new PolygonOptions().addAll(listLatLng)
+                .fillColor(Color.parseColor(Constantes.COLOR_CELESTE_CLARO))
+                .strokeColor(Color.parseColor(Constantes.COLOR_BLANCO))
+                .strokeWidth(1);
+        Polygon polygon2 = googleMap.addPolygon(polOpt);
+        polygon2.setClickable(true);
+        polygon2.setTag(numRegion);
+
+    }
+
+    private Coordenadas readJsonFromAssets(int numRegion){
+        String jsonFileString = Utilities.getJsonFromAssets(getActivity().getApplicationContext(), "regiones/" + numRegion + ".json");
+        Gson gson = new Gson();
+        Type coordenadas = new TypeToken<Coordenadas>() {
+        }.getType();
+        return gson.fromJson(jsonFileString, coordenadas);
+    }
+
+    private void generarRegiones(GoogleMap googleMap) {
+        lol(googleMap,1);
+        lol(googleMap,2);
+        lol(googleMap,3);
+        lol(googleMap,4);
+        lol(googleMap,5);
+        lol(googleMap,6);
+        lol(googleMap,7);
+        lol(googleMap,8);
+        lol(googleMap,9);
+        lol(googleMap,10);
+        lol(googleMap,11);
+        lol(googleMap,12);
+        lol(googleMap,13);
+        lol(googleMap,14);
+        lol(googleMap,15);
+        lol(googleMap,16);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-26.06665213857739, -70.64208984375), 2));
     }
 }

@@ -23,7 +23,7 @@ public class Utilities {
         Toast.makeText(MyApp.getContext(), message, Toast.LENGTH_LONG).show();
     }
 
-    static String getJsonFromAssets(Context context, String fileName) {
+    public static String getJsonFromAssets(Context context, String fileName) {
         String jsonString;
         try {
             InputStream is = context.getAssets().open(fileName);
