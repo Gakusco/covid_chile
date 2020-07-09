@@ -30,6 +30,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.ubb.covidchile.Common.Constantes;
 import com.ubb.covidchile.R;
 import com.ubb.covidchile.Retrofit.Request.Reporte;
 import com.ubb.covidchile.Retrofit.Request.RequestWS;
@@ -143,7 +144,7 @@ public class NacionalFragment extends Fragment {
 
     private void generarGrafico (RequestWS body) {
         Reporte reporte = body.getReporte();
-        acumuladoTotal.setText("Acumulado total: "+NumberFormat.getInstance().format(reporte.getAcumuladoTotal()));
+        acumuladoTotal.setText(Constantes.CASOS_TOTALES.concat(NumberFormat.getInstance().format(reporte.getAcumuladoTotal())));
         fechaTextView.setText(body.getFecha());
 
         guardarDatosDelReporte(reporte);
@@ -176,12 +177,12 @@ public class NacionalFragment extends Fragment {
     }
 
     private void guardarDatosDelReporte(Reporte reporte) {
-        datos.add(new CantidadPersonas("Casos nuevos total",reporte.getCasosNuevosTotal()));
-        datos.add(new CantidadPersonas("Casos nuevos con síntomas",reporte.getCasosNuevosCSintomas()));
-        datos.add(new CantidadPersonas("Casos nuevos sin síntomas",reporte.getCasosNuevosSSintomas()));
-        datos.add(new CantidadPersonas("Casos nuevos sin notificar",reporte.getCasosNuevosSNotificar()));
-        datos.add(new CantidadPersonas("Fallecidos",reporte.getFallecidos()));
-        datos.add(new CantidadPersonas("Casos activos confirmados",reporte.getCasosActivosConfirmados()));
+        datos.add(new CantidadPersonas(Constantes.NUEVOS_CASOS,reporte.getCasosNuevosTotal()));
+        datos.add(new CantidadPersonas(Constantes.CON_SINTOMAS,reporte.getCasosNuevosCSintomas()));
+        datos.add(new CantidadPersonas(Constantes.SIN_SINTOMAS,reporte.getCasosNuevosSSintomas()));
+        datos.add(new CantidadPersonas(Constantes.SIN_NOTIFICAR,reporte.getCasosNuevosSNotificar()));
+        datos.add(new CantidadPersonas(Constantes.FALLECIDOS,reporte.getFallecidos()));
+        datos.add(new CantidadPersonas(Constantes.ACTIVOS,reporte.getCasosActivosConfirmados()));
     }
 
     private void llamarServicio() {
