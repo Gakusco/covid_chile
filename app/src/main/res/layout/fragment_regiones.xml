@@ -6,5 +6,34 @@
     android:layout_height="match_parent"
     tools:context="com.ubb.covidchile.UI.Fragments.PorRegion.PorRegionFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ProgressBar
+            android:id="@+id/progressBarRegion"
+            style="?android:attr/progressBarStyleLarge"
+            android:indeterminateTint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/progressBarinsideText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Cargando datos ..."
+            android:visibility="gone"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
 </fragment>
 

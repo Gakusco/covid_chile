@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -52,6 +53,9 @@ public class PorRegionFragment extends Fragment {
     private TextView tvFallecidos;
     private TextView tvActivos;
 
+    private TextView progressBarinsideText;
+    private ProgressBar progressBar;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -65,6 +69,9 @@ public class PorRegionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+
+        initProgressBar(view);
+
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
@@ -76,11 +83,12 @@ public class PorRegionFragment extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
             setConfigMap(googleMap);
             googleMap.setOnPolygonClickListener(polygon -> {
-                Toast.makeText(getActivity().getApplicationContext(), "Cargando datos ...", Toast.LENGTH_SHORT).show();
+                showProgressBar();
                 Call<RequestWS> dataId = webService.dataId(Integer.parseInt(polygon.getTag().toString()));
                 dataId.enqueue(new Callback<RequestWS>() {
                     @Override
                     public void onResponse(Call<RequestWS> call, Response<RequestWS> response) {
+                        hiddenProgressBar();
                         openBottomSheetDialog(response.body());
                     }
 
@@ -120,7 +128,7 @@ public class PorRegionFragment extends Fragment {
         tvActivos = bottom.findViewById(R.id.tv_activos);
     }
 
-    private void setTextAndDataTextViews(RequestWS res){
+    private void setTextAndDataTextViews(RequestWS res) {
         tvNameRegion.setText(res.getInfo());
         tvDate.setText(Constantes.FECHA.concat(res.getFecha()));
         tvCasosTotales.setText(Constantes.CASOS_TOTALES.concat(String.valueOf(res.getReporte().getAcumuladoTotal())));
@@ -174,5 +182,20 @@ public class PorRegionFragment extends Fragment {
     private void retrofitInit() {
         webServiceClient = WebServiceClient.getInstance();
         webService = webServiceClient.getWebService();
+    }
+
+    private void initProgressBar(View view) {
+        progressBar = view.findViewById(R.id.progressBarRegion);
+        progressBarinsideText = view.findViewById(R.id.progressBarinsideText);
+    }
+
+    private void showProgressBar(){
+        progressBar.setVisibility(View.VISIBLE);
+        progressBarinsideText.setVisibility(View.VISIBLE);
+    }
+
+    private void hiddenProgressBar(){
+        progressBar.setVisibility(View.INVISIBLE);
+        progressBarinsideText.setVisibility(View.INVISIBLE);
     }
 }
