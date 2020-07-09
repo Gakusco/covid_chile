@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_regionales"
-        android:name="com.ubb.covidchile.UI.Fragments.Regionales.RegionesFragment"
+        android:name="com.ubb.covidchile.UI.Fragments.PorRegion.PorRegionFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_regional"
-        android:name="com.ubb.covidchile.UI.Fragments.Regional.RegionalFragment"
+        android:name="com.ubb.covidchile.UI.Fragments.Regiones.RegionesFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_regional" />
 </navigation>

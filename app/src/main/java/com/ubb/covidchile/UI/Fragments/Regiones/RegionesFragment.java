@@ -1,4 +1,4 @@
-package com.ubb.covidchile.UI.Fragments.Regionales;
+package com.ubb.covidchile.UI.Fragments.Regiones;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,17 +12,17 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import com.ubb.covidchile.R;
 
-public class RegionalFragment extends Fragment {
+public class RegionesFragment extends Fragment {
 
-    private RegionalViewModel dashboardViewModel;
+    private RegionesViewModel notificationsViewModel;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
             ViewGroup container, Bundle savedInstanceState) {
-        dashboardViewModel =
-                ViewModelProviders.of(this).get(RegionalViewModel.class);
-        View root = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        final TextView textView = root.findViewById(R.id.text_dashboard);
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
+        notificationsViewModel =
+                ViewModelProviders.of(this).get(RegionesViewModel.class);
+        View root = inflater.inflate(R.layout.fragment_regional, container, false);
+        final TextView textView = root.findViewById(R.id.text_notifications);
+        notificationsViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
             @Override
             public void onChanged(@Nullable String s) {
                 textView.setText(s);

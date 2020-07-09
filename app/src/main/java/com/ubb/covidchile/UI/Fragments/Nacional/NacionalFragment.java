@@ -75,10 +75,7 @@ public class NacionalFragment extends Fragment {
         });
 
         llamarServicio();
-        chart = root.findViewById(R.id.chart);
-        acumuladoTotal = root.findViewById(R.id.textAcumulado);
-        fechaTextView = root.findViewById(R.id.fechaTextView);
-        progressBar = root.findViewById(R.id.progressBar);
+        inflarComponentes(root);
         declararVariables();
         datosNivelNacional();
         return root;
@@ -97,70 +94,11 @@ public class NacionalFragment extends Fragment {
             @Override
             public void onResponse(Call<RequestWS> call, Response<RequestWS> response) {
                 if(response.isSuccessful()){
-                    Log.d("Retrofit",response.body().toString());
                     chart.setVisibility(View.VISIBLE);
-                    Reporte reporte = response.body().getReporte();
-                    acumuladoTotal.setText("Acumulado total: "+NumberFormat.getInstance().format(reporte.getAcumuladoTotal()));
-                    fechaTextView.setText(response.body().getFecha());
-
-                    datos.add(new CantidadPersonas("Casos nuevos total",reporte.getCasosNuevosTotal()));
-                    datos.add(new CantidadPersonas("Casos nuevos con síntomas",reporte.getCasosNuevosCSintomas()));
-                    datos.add(new CantidadPersonas("Casos nuevos sin síntomas",reporte.getCasosNuevosSSintomas()));
-                    datos.add(new CantidadPersonas("Casos nuevos sin notificar",reporte.getCasosNuevosSNotificar()));
-                    datos.add(new CantidadPersonas("Fallecidos",reporte.getFallecidos()));
-                    datos.add(new CantidadPersonas("Casos activos confirmados",reporte.getCasosActivosConfirmados()));
-                    String nombreReporte = "";
-                    int cantidad = 0;
-                    for(int i = 0;i<datos.size();i++) {
-                        cantidad= datos.get(i).getCantidad();
-                        nombreReporte = datos.get(i).getCaracteristica();
-
-                        barEntries.add(new BarEntry(i,cantidad));
-                        nombresReporte.add(nombreReporte);
-                    }
-
-                    BarDataSet barDataSet = new BarDataSet(barEntries,"Cantidad de personas");
-                    barDataSet.setColors(ColorTemplate.PASTEL_COLORS);
-
-                    Description description = new Description();
-
-                    description.setText("Casos");
-                    chart.setDescription(description);
-
-                    BarData barData = new BarData(barDataSet);
-                    chart.setData(barData);
-
-
-                    chart.animateY(1000);
-                    chart.invalidate();
-
+                    generarGrafico(response.body());
                     progressBar.setVisibility(View.GONE);
-                    chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-                        @Override
-                        public void onValueSelected(Entry e, Highlight h) {
-                            int indice = chart.getData().getDataSetForEntry(e).getEntryIndex((BarEntry) e);
-                            String nombreReporte = datos.get(indice).getCaracteristica();
-                            String cantidadCasos = NumberFormat.getInstance().format(datos.get(indice).getCantidad());
+                    interaccionConElGrafico();
 
-                            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                            builder.setCancelable(true);
-
-                            View view = LayoutInflater.from(getActivity()).inflate(R.layout.informacion_del_caso,null);
-                            casoTextView = view.findViewById(R.id.casoTextView);
-                            cantidadTextView = view.findViewById(R.id.cantidadTextView);
-
-                            casoTextView.setText(nombreReporte);
-                            cantidadTextView.setText(cantidadCasos);
-                            builder.setView(view);
-                            AlertDialog alertDialog= builder.create();
-                            alertDialog.show();
-                        }
-
-                        @Override
-                        public void onNothingSelected() {
-
-                        }
-                    });
 
                 } else if (!response.isSuccessful()) {
                     Log.d("Retrofit",response.errorBody().toString());
@@ -174,7 +112,86 @@ public class NacionalFragment extends Fragment {
         });
     }
 
+    private void interaccionConElGrafico() {
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                int indice = chart.getData().getDataSetForEntry(e).getEntryIndex((BarEntry) e);
+                String nombreReporte = datos.get(indice).getCaracteristica();
+                String cantidadCasos = NumberFormat.getInstance().format(datos.get(indice).getCantidad());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setCancelable(true);
+
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.informacion_del_caso,null);
+                casoTextView = view.findViewById(R.id.casoTextView);
+                cantidadTextView = view.findViewById(R.id.cantidadTextView);
+
+                casoTextView.setText(nombreReporte);
+                cantidadTextView.setText(cantidadCasos);
+                builder.setView(view);
+                AlertDialog alertDialog= builder.create();
+                alertDialog.show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+    }
+
+    private void generarGrafico (RequestWS body) {
+        Reporte reporte = body.getReporte();
+        acumuladoTotal.setText("Acumulado total: "+NumberFormat.getInstance().format(reporte.getAcumuladoTotal()));
+        fechaTextView.setText(body.getFecha());
+
+        guardarDatosDelReporte(reporte);
+        desplegarDatosEnElGrafico();
+    }
+
+    private void desplegarDatosEnElGrafico() {
+
+        llenarLasEntradasDelGrafico();
+
+        BarDataSet barDataSet = new BarDataSet(barEntries,"Cantidad de personas");
+        barDataSet.setColors(ColorTemplate.PASTEL_COLORS);
+
+        Description description = new Description();
+
+        description.setText("Casos");
+        chart.setDescription(description);
+
+        BarData barData = new BarData(barDataSet);
+        chart.setData(barData);
+        chart.animateY(1000);
+        chart.invalidate();
+    }
+
+    private void llenarLasEntradasDelGrafico() {
+        for(int i = 0;i<datos.size();i++) {
+            int cantidad= datos.get(i).getCantidad();
+            barEntries.add(new BarEntry(i,cantidad));
+        }
+    }
+
+    private void guardarDatosDelReporte(Reporte reporte) {
+        datos.add(new CantidadPersonas("Casos nuevos total",reporte.getCasosNuevosTotal()));
+        datos.add(new CantidadPersonas("Casos nuevos con síntomas",reporte.getCasosNuevosCSintomas()));
+        datos.add(new CantidadPersonas("Casos nuevos sin síntomas",reporte.getCasosNuevosSSintomas()));
+        datos.add(new CantidadPersonas("Casos nuevos sin notificar",reporte.getCasosNuevosSNotificar()));
+        datos.add(new CantidadPersonas("Fallecidos",reporte.getFallecidos()));
+        datos.add(new CantidadPersonas("Casos activos confirmados",reporte.getCasosActivosConfirmados()));
+    }
+
     private void llamarServicio() {
         servicio = WebServiceClient.getInstance().getWebService();
+    }
+
+    private void inflarComponentes(View root) {
+        chart = root.findViewById(R.id.chart);
+        acumuladoTotal = root.findViewById(R.id.textAcumulado);
+        fechaTextView = root.findViewById(R.id.fechaTextView);
+        progressBar = root.findViewById(R.id.progressBar);
     }
 }

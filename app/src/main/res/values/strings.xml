@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">CovidChile</string>
     <string name="title_home">Nacional</string>
-    <string name="title_dashboard">Regionales</string>
-    <string name="title_notifications">Regional</string>
+    <string name="title_dashboard">Por region</string>
+    <string name="title_notifications">Regiones</string>
 </resources>
