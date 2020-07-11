@@ -1,6 +1,7 @@
 package com.ubb.covidchile.Retrofit;
 
 
+import com.ubb.covidchile.Retrofit.Request.ReporteRegionesWS;
 import com.ubb.covidchile.Retrofit.Request.RequestWS;
 
 import retrofit2.Call;
@@ -12,7 +13,7 @@ public interface WebService {
     Call<RequestWS> regiones();
 
     @POST("data/all")
-    Call<RequestWS> dataAll();
+    Call<ReporteRegionesWS> dataAll();
 
     @POST("data/{idregion}")
     Call<RequestWS> dataId(@Path("idregion") int idRegion);
