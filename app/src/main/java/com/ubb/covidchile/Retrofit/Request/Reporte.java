@@ -5,6 +5,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Reporte {
 
+    @SerializedName("region")
+    @Expose
+    private String region;
+
     @SerializedName("acumulado_total")
     @Expose
     private int acumuladoTotal;
@@ -33,7 +37,8 @@ public class Reporte {
     @Expose
     private int casosActivosConfirmados;
 
-    public Reporte(int acumuladoTotal, int casosNuevosTotal, int casosNuevosCSintomas, int casosNuevosSSintomas, int casosNuevosSNotificar, int fallecidos, int casosActivosConfirmados) {
+    public Reporte(String region, int acumuladoTotal, int casosNuevosTotal, int casosNuevosCSintomas, int casosNuevosSSintomas, int casosNuevosSNotificar, int fallecidos, int casosActivosConfirmados) {
+        this.region = region;
         this.acumuladoTotal = acumuladoTotal;
         this.casosNuevosTotal = casosNuevosTotal;
         this.casosNuevosCSintomas = casosNuevosCSintomas;
@@ -41,6 +46,14 @@ public class Reporte {
         this.casosNuevosSNotificar = casosNuevosSNotificar;
         this.fallecidos = fallecidos;
         this.casosActivosConfirmados = casosActivosConfirmados;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public int getAcumuladoTotal() {
@@ -102,7 +115,8 @@ public class Reporte {
     @Override
     public String toString() {
         return "Reporte{" +
-                "acumuladoTotal=" + acumuladoTotal +
+                "region='" + region + '\'' +
+                ", acumuladoTotal=" + acumuladoTotal +
                 ", casosNuevosTotal=" + casosNuevosTotal +
                 ", casosNuevosCSintomas=" + casosNuevosCSintomas +
                 ", casosNuevosSSintomas=" + casosNuevosSSintomas +

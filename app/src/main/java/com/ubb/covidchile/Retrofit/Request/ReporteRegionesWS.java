@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class RequestWS {
+public class ReporteRegionesWS {
     @SerializedName("info")
     @Expose
     private String info;
@@ -14,22 +14,17 @@ public class RequestWS {
     @Expose
     private boolean estado;
 
-    @SerializedName("regiones")
-    @Expose
-    private List<Regiones> regiones;
-
     @SerializedName("fecha")
     @Expose
     private String fecha;
 
     @SerializedName("reporte")
     @Expose
-    private Reporte reporte;
+    private List<Reporte> reporte;
 
-    public RequestWS(String info, boolean estado, List<Regiones> regiones, String fecha, Reporte reporte) {
+    public ReporteRegionesWS(String info, boolean estado, String fecha, List<Reporte> reporte) {
         this.info = info;
         this.estado = estado;
-        this.regiones = regiones;
         this.fecha = fecha;
         this.reporte = reporte;
     }
@@ -50,14 +45,6 @@ public class RequestWS {
         this.estado = estado;
     }
 
-    public List<Regiones> getRegiones() {
-        return regiones;
-    }
-
-    public void setRegiones(List<Regiones> regiones) {
-        this.regiones = regiones;
-    }
-
     public String getFecha() {
         return fecha;
     }
@@ -66,20 +53,19 @@ public class RequestWS {
         this.fecha = fecha;
     }
 
-    public Reporte getReporte() {
+    public List<Reporte> getReporte() {
         return reporte;
     }
 
-    public void setReporte(Reporte reporte) {
+    public void setReporte(List<Reporte> reporte) {
         this.reporte = reporte;
     }
 
     @Override
     public String toString() {
-        return "RequestWS{" +
+        return "ReporteRegionesWS{" +
                 "info='" + info + '\'' +
                 ", estado=" + estado +
-                ", regiones=" + regiones +
                 ", fecha='" + fecha + '\'' +
                 ", reporte=" + reporte +
                 '}';
