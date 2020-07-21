@@ -1,8 +1,8 @@
 package com.ubb.covidchile.UI.Fragments.Regiones;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.renderscript.Sampler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,28 +16,23 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.DefaultAxisValueFormatter;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.LargeValueFormatter;
-import com.github.mikephil.charting.formatter.StackedValueFormatter;
-import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.ubb.covidchile.Common.Constantes;
 import com.ubb.covidchile.R;
 import com.ubb.covidchile.Retrofit.Request.Reporte;
 import com.ubb.covidchile.Retrofit.Request.ReporteRegionesWS;
-import com.ubb.covidchile.Retrofit.Request.RequestWS;
 import com.ubb.covidchile.Retrofit.WebService;
 import com.ubb.covidchile.Retrofit.WebServiceClient;
 import com.ubb.covidchile.UI.Fragments.Nacional.CantidadPersonas;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,6 +45,7 @@ public class RegionesFragment extends Fragment {
 
     private RegionesViewModel notificationsViewModel;
     private WebService servicio;
+    private TextView regionTextView;
 
     private BarChart chart;
     private TextView fechaTextView;
@@ -88,6 +84,7 @@ public class RegionesFragment extends Fragment {
                     chart.setVisibility(View.VISIBLE);
                     generarGrafico(response.body());
                     progressBar.setVisibility(View.GONE);
+                    interaccionConElGrafico();
                     Log.d("Retrofit",response.body().toString());
                 } else if (!response.isSuccessful()) {
                     Log.d("Retrofit",response.errorBody().toString());
@@ -97,6 +94,32 @@ public class RegionesFragment extends Fragment {
             @Override
             public void onFailure(Call<ReporteRegionesWS> call, Throwable t) {
                 Log.d("Retrofit",t.getMessage());
+            }
+        });
+    }
+
+    private void interaccionConElGrafico() {
+        chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                int indice = chart.getData().getDataSetForEntry(e).getEntryIndex((BarEntry) e);
+                String region = datos[indice][0].getCaracteristica();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setCancelable(true);
+
+                View view = LayoutInflater.from(getActivity()).inflate(R.layout.informacion_del_caso,null);
+                regionTextView = view.findViewById(R.id.casoTextView);
+
+                regionTextView.setText("Caso de la región: "+region);
+                builder.setView(view);
+                AlertDialog alertDialog= builder.create();
+                alertDialog.show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
             }
         });
     }
