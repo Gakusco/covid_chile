@@ -77,6 +77,7 @@ public class NacionalFragment extends Fragment {
 
         llamarServicio();
         inflarComponentes(root);
+
         declararVariables();
         datosNivelNacional();
         return root;

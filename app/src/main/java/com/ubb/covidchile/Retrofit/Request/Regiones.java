@@ -7,38 +7,37 @@ import java.util.List;
 
 public class Regiones {
 
-    // Tengo mis dudas en esta parte.
-
     @SerializedName("id")
     @Expose
-    private List<Integer> id;
+    private int id;
 
     @SerializedName("nombre")
     @Expose
-    private List<String> nombre;
+    private String nombre;
 
     @SerializedName("coordenadas")
     @Expose
     private List<String> coordenadas;
 
-    public Regiones(List<Integer> id, List<String> nombre) {
+    public Regiones(int id, String nombre, List<String> coordenadas) {
         this.id = id;
         this.nombre = nombre;
+        this.coordenadas = coordenadas;
     }
 
-    public List<Integer> getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(List<Integer> id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public List<String> getNombre() {
+    public String getNombre() {
         return nombre;
     }
 
-    public void setNombre(List<String> nombre) {
+    public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
@@ -54,7 +53,8 @@ public class Regiones {
     public String toString() {
         return "Regiones{" +
                 "id=" + id +
-                ", nombre=" + nombre +
+                ", nombre='" + nombre + '\'' +
+                ", coordenadas=" + coordenadas +
                 '}';
     }
 }
