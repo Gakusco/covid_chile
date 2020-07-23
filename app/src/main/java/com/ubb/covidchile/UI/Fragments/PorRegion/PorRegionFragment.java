@@ -151,7 +151,7 @@ public class PorRegionFragment extends Fragment {
             setPolygonToMap(googleMap, i + 1);
         }
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-26.06665213857739, -70.64208984375), 2));
-        googleMap.setMinZoomPreference(5f);
+        googleMap.setMinZoomPreference(4.5f);
     }
 
     private void setPolygonToMap(GoogleMap googleMap, int numRegion) {
